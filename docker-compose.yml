@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  server:
+    image: telegram_bot:latest
+    restart: always
+    build: .
+    env_file:
+      - .env
+
+    volumes:
+      - .:/app
+    ports:
+      - 5000:5000
+    command: pnpm run start:dev
+
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    restart: always
+    container_name: redis_tg_bot
+    env_file:
+      - .env
+    ports:
+      - 6379:6379
